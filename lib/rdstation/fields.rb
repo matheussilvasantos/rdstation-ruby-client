@@ -17,6 +17,13 @@ module RDStation
       RDStation::ErrorHandler.new(response).raise_errors
     end
 
+    def create(field_hash)
+      response = self.class.post(BASE_URL, body: field_hash.to_json, headers: required_headers)
+      response_body = JSON.parse(response.body)
+      return response_body unless response_body['errors']
+      RDStation::ErrorHandler.new(response).raise_errors
+    end
+
     private
 
     def required_headers
